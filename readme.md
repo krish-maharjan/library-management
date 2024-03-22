@@ -21,12 +21,9 @@ LibMange is a comprehensive library management system designed using a microserv
 
 LibMange leverages Django and Django REST Framework, along with other technologies, to provide a robust and flexible platform:
 
-- Django==5.0.3: For web application development and database management.
-- djangorestframework==3.15.0: To create Web APIs for service communication.
-- django-rest-knox==4.2.0: Provides token-based authentication for secure access.
-- django-rest-passwordreset==1.4.0: Adds password reset functionality for users.
-- pika==1.3.2: Integrates RabbitMQ messaging for service-to-service communication.
-- And other necessary libraries for optimal performance.
+- djangorestframework
+- django-rest-knox
+- pika
 
 ## Getting Started
 
@@ -34,3 +31,8 @@ Begin by setting up the environment for each service in the LibMange system by f
 
 1. **Clone the Repository**
 
+2. **Install Dependencies**
+Within each service directory (`auth`, `book-management`, `book-borrow`), install the required packages from `requirements.txt`.
+
+3. **Apply Database Migrations**
+Execute database migrations for each service to prepare the database schema.
