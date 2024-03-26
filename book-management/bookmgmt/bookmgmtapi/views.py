@@ -6,18 +6,25 @@ from .producer import ProducerRequest
 from .serializers import BookSerializer
 from rest_framework import status
 from .models import BooksMgmtModel
+import requests
 
 # Create your views here.
 class BooksViews(APIView):
     def get(self, request):
         received_token = request.headers.get('Authorization')
 
-        producer = ProducerRequest()
-        producer.produce("borrow","borrowroute", received_token)
+        validate_token_url = "http://127.0.0.1:8001/validate/user"
+        headers = {'Authorization': received_token}
+        response = requests.get(validate_token_url, headers=headers)
 
-        all_books = BooksMgmtModel.objects.all()
-        all_books_serialized = BookSerializer(all_books, many=True)
-        return Response(all_books_serialized.data)
+        # If the token is valid, proceed with fetching and returning the book data
+        if response.status_code == 200:
+            all_books = BooksMgmtModel.objects.all()
+            all_books_serialized = BookSerializer(all_books, many=True)
+            return Response(all_books_serialized.data)
+
+        else:
+            return Response({"msg": "User auth failed"}, status=status.HTTP_401_UNAUTHORIZED)
 
     def post(self, request, format=None):
         received_request = json.loads(request.body)
@@ -45,7 +52,7 @@ class BookMgmtViews(APIView):
 
     def get(self, request,pk):
         try:
-            book_instance = BooksMgmtModel.objects.get(id=pk)
+            book_instance = BooksMgmtModel.objects.get(book_id=pk)
             book_serializer = BookSerializer(book_instance)
             return Response(book_serializer.data, status=status.HTTP_201_CREATED)
         except BooksMgmtModel.DoesNotExist:
@@ -53,7 +60,7 @@ class BookMgmtViews(APIView):
 
     def delete(self, pk):
         try:
-            book_instance = BooksMgmtModel.objects.get(id=pk)
+            book_instance = BooksMgmtModel.objects.get(book_id=pk)
             book_serializer = BookSerializer(book_instance)
             return Response(book_serializer.data, status=status.HTTP_201_CREATED)
         except BooksMgmtModel.DoesNotExist:
