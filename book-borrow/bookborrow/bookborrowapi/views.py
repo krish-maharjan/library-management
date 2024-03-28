@@ -32,8 +32,10 @@ class ReturnView(APIView):
         received_request = json.loads(request.body)
 
         bookid = received_request.get('book_id')
-        borrowid = received_request.get('borrow_id')
+        borrowid = int(received_request.get('borrow_id'))
         return_date = received_request.get('submitted_date')
+
+        print("borrowid", borrowid, type(borrowid))
 
         BookModel = BorrowBookModel.objects.get(borrow_id=borrowid)
         BookModel.submitted_date = return_date
