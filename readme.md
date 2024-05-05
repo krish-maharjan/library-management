@@ -1,4 +1,4 @@
-# LibMange: A Django Microservice Architecture for Library Management
+# LibMange: A mono repo Microservice application built on django for Library Management
 
 ## Postman Documentation [Postman Documentation](https://documenter.getpostman.com/view/26802289/2sA35G52qb)
 
